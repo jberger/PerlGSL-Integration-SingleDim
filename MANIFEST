@@ -1,0 +1,7 @@
+Build.PL
+Changes
+lib/PerlGSL/Integration/ppport.h
+lib/PerlGSL/Integration/SingleDim.pm
+lib/PerlGSL/Integration/SingleDim.xs
+MANIFEST			This list of files
+t/integrate.t

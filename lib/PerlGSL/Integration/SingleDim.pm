@@ -88,7 +88,7 @@ PerlGSL::Integration::SingleDim - A Perlish Interface to the GSL 1D Integration 
 =head1 SYNOPSIS
 
  use PerlGSL::Integration::SingleDim qw/int_1d/;
-
+ my $result = int_1d(sub{ exp( -($_[0]**2) ) }, 0, 'Inf');
 
 =head1 DESCRIPTION
 

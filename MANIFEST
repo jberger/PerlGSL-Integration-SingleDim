@@ -4,4 +4,7 @@ lib/PerlGSL/Integration/ppport.h
 lib/PerlGSL/Integration/SingleDim.pm
 lib/PerlGSL/Integration/SingleDim.xs
 MANIFEST			This list of files
+META.json
+META.yml
+README.pod
 t/integrate.t

@@ -6,6 +6,11 @@ use Module::Build;
 
 my $gsl_libs = $ENV{PERLGSL_LIBS} || qx! gsl-config --libs !;
 
+unless ($gsl_libs) {
+  print "PerlGSL::Integration::SingleDim requires the GSL library to be installed and available. Use PERLGSL_LIBS to specify the linker flags if needed.\n";
+  exit( ! $ENV{AUTOMATED_TESTING} );
+}
+
 my $build = Module::Build->new(
   module_name       => 'PerlGSL::Integration::SingleDim',
   dist_author       => 'Joel Berger <joel.a.berger@gmail.com>',

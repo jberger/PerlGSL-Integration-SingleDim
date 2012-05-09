@@ -100,9 +100,9 @@ No functions are exported by default.
 
 =over
 
-=item int_multi
+=item int_1d
 
-This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are array references defining the lower and upper bound of integration; these should each be of the same length and in the same order as the dimesions of the system (and thus the number of arguments taken by the subroutine reference). 
+This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are numbers defining the lower and upper bound of integration. 
 
 The options hash reference accepts the following keys:
 
@@ -111,6 +111,10 @@ The options hash reference accepts the following keys:
 =item *
 
 calls - The number of points sampled in the function space. The default is 1000.
+
+=item *
+
+engine - This key is mostly for internal use, however if the value C<fast> is given, the C<qng> engine will be used if possible. Other values (the C<qag> type engines) are determined internally as needed.
 
 =back
 

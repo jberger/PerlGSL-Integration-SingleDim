@@ -27,7 +27,7 @@ my %engine = (
 );
 
 sub int_1d {
-  croak "int_multi requires 3 arguments, aside from an options hashref" 
+  croak "int_1d requires 3 arguments, aside from an options hashref" 
     unless @_ >= 3;
 
   my ($sub, $xl, $xu) = (shift, shift, shift);
@@ -122,7 +122,7 @@ calls - The number of points sampled in the function space. The default is 1000.
 
 =item *
 
-engine - This key is mostly for internal use, however if the value C<fast> is given, the C<qng> engine will be used if possible. Other values (the C<qag> type engines) are determined internally as needed. The default is C<qag> with a 21 point sample.
+engine - This key is mostly for internal use, however if the value C<fast> is given, the C<qng> engine will be used if possible. Other values (the C<qag> type engines) are determined internally as needed. The default is C<qag> with a 21 point sample (this sampling setting is not configurable yet, but this is a reasonable choice).
 
 =back
 
@@ -141,6 +141,10 @@ This module needs the GSL library installed and available. The C<PERLGSL_LIBS> e
 =item *
 
 L<PerlGSL>
+
+=item *
+
+L<PerlGSL::Integration::MultiDim>
 
 =item *
 

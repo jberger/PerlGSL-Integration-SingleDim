@@ -102,7 +102,7 @@ No functions are exported by default.
 
 =item int_1d
 
-This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are numbers defining the lower and upper bound of integration. 
+This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are numbers defining the lower and upper bound of integration. The strings C<-Inf> for a lower limit, and C<Inf> for an upper limit are allowed as well (triggering the C<qagi>-type engines.
 
 The options hash reference accepts the following keys:
 
@@ -110,11 +110,19 @@ The options hash reference accepts the following keys:
 
 =item *
 
+epsabs - The maximum allowable absolute error. The default is C<0> (ignored).
+
+=item *
+
+epsrel - The maximum allowable relative error. The default is C<1e-7>.
+
+=item *
+
 calls - The number of points sampled in the function space. The default is 1000.
 
 =item *
 
-engine - This key is mostly for internal use, however if the value C<fast> is given, the C<qng> engine will be used if possible. Other values (the C<qag> type engines) are determined internally as needed.
+engine - This key is mostly for internal use, however if the value C<fast> is given, the C<qng> engine will be used if possible. Other values (the C<qag> type engines) are determined internally as needed. The default is C<qag> with a 21 point sample.
 
 =back
 

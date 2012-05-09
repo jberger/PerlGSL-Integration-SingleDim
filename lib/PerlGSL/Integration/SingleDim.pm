@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Carp;
+use Scalar::Util qw/looks_like_number/;
 
 our $VERSION = '0.001';
 $VERSION = eval $VERSION;
@@ -16,17 +17,62 @@ our @EXPORT_OK = ( qw/
   int_1d
 / );
 
+my %engine = (
+  qng   => 0,
+  fast  => 0, # alias for qng
+  qag   => 1,
+  qagi  => 2,
+  qagiu => 3,
+  qagil => 4,
+);
+
 sub int_1d {
-  my $opts;
-  if (eval { ref $_[-1] eq 'HASH' }) {
-    $opts = pop;
-  }
-  $opts->{calls} ||= 1000;
-
   croak "int_multi requires 3 arguments, aside from an options hashref" 
-    unless @_ == 3;
+    unless @_ >= 3;
 
-  my $ret = c_int_1d(@_, $opts->{calls});
+  my ($sub, $xl, $xu) = (shift, shift, shift);
+
+  my %opts;
+  if (@_) {
+    %opts = ref $_[0] ? %{shift()} : @_;
+  }
+
+  $opts{epsabs} ||= 0;
+  $opts{epsrel} ||= 1e-7;
+  $opts{calls}  ||= 1000;
+
+  # handle infinite limits
+  my $xu_is_inf = $xu =~ /inf/i;
+  my $xl_is_inf = $xl =~ /\-inf/i;
+
+  if ($xu_is_inf) {
+    $xu = 0;
+    $opts{engine} = 'qagiu';
+  }
+
+  if ($xl_is_inf) {
+    $xl = 0;
+    $opts{engine} = 'qagil';
+  }
+
+  if ($xl_is_inf and $xu_is_inf) {
+    $opts{engine} = 'qagi';
+  }
+  # end inf limits
+
+  unless (looks_like_number $xl) {
+    croak "Lower limit is not a number: $xl";
+  }
+
+  unless (looks_like_number $xu) {
+    croak "Upper limit is not a number: $xu";
+  }
+
+  unless (defined $opts{engine}) {
+    $opts{engine} = 'qag';
+  }
+
+  my $ret = c_int_1d($sub, $xl, $xu, $engine{$opts{engine}}, @opts{ qw/epsabs epsrel calls/ });
   return wantarray ? @$ret : $ret->[0];
 }
 

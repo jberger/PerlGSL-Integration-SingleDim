@@ -45,7 +45,8 @@ double integrand(double x, void *params) {
   return val;
 }
 
-AV* c_int_1d(SV* eqn, SV* lower, SV* upper, int calls) {
+AV* c_int_1d(SV* eqn, SV* lower, SV* upper, int engine, 
+               double epsabs, double epsrel, int calls) {
 
   int i, dim;
   double xl, xu, res, err;
@@ -56,8 +57,6 @@ AV* c_int_1d(SV* eqn, SV* lower, SV* upper, int calls) {
 
   xl = SvNV(lower);
   xu = SvNV(upper);
-  double epsabs = 0;
-  double epsrel = 1e-7;
 
   calls_size = (size_t)calls;
   gsl_integration_workspace * w
@@ -68,7 +67,25 @@ AV* c_int_1d(SV* eqn, SV* lower, SV* upper, int calls) {
   F.function = &integrand;
   F.params = &myparams;
 
-  gsl_integration_qag (&F, xl, xu, epsabs, epsrel, calls_size, GSL_INTEG_GAUSS21, w, &res, &err);
+  switch (engine) {
+    case 0:
+      gsl_integration_qng(&F, xl, xu, epsabs, epsrel, &res, &err, &calls_size);
+      break;
+    case 1:
+      gsl_integration_qag(&F, xl, xu, epsabs, epsrel, calls_size, GSL_INTEG_GAUSS21, w, &res, &err);
+      break;
+    case 2:
+      gsl_integration_qagi(&F, epsabs, epsrel, calls_size, w, &res, &err);
+      break;
+    case 3:
+      gsl_integration_qagiu(&F, xl, epsabs, epsrel, calls_size, w, &res, &err);
+      break;
+    case 4:
+      gsl_integration_qagil(&F, xu, epsabs, epsrel, calls_size, w, &res, &err);
+      break;
+    default:
+      croak("Unknown integrator engine");
+  }
 
   av_push(ret, newSVnv(res));
   av_push(ret, newSVnv(err));
@@ -84,9 +101,12 @@ MODULE = PerlGSL::Integration::SingleDim	PACKAGE = PerlGSL::Integration::SingleD
 PROTOTYPES: DISABLE
 
 AV *
-c_int_1d (eqn, lower, upper, calls)
+c_int_1d (eqn, lower, upper, engine, epsabs, epsrel, calls)
 	SV*	eqn
 	SV*	lower
 	SV*	upper
+	int	engine
+	double	epsabs
+	double	epsrel
 	int	calls
 

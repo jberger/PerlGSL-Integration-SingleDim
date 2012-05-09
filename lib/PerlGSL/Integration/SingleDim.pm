@@ -102,7 +102,7 @@ No functions are exported by default.
 
 =item int_1d
 
-This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are numbers defining the lower and upper bound of integration. The strings C<-Inf> for a lower limit, and C<Inf> for an upper limit are allowed as well (triggering the C<qagi>-type engines.
+This is the main interface provided by the module. It takes three required arguments and an (optional) options hash. The first argument is a subroutine reference defining the integrand. The next two are numbers defining the lower and upper bound of integration. The strings C<-Inf> for a lower limit, and C<Inf> for an upper limit are allowed as well (triggering the C<qagi>-type engines).
 
 The options hash reference accepts the following keys:
 

@@ -27,8 +27,8 @@ my $build = Module::Build->new(
   extra_linker_flags => $gsl_libs,
   meta_merge => {
     resources  => {
-      repository => "http://github.com/jberger/PerlGSL-Integration-SingeDim",
-      bugtracker => "http://github.com/jberger/PerlGSL-Integration-SingeDim/issues",
+      repository => "http://github.com/jberger/PerlGSL-Integration-SingleDim",
+      bugtracker => "http://github.com/jberger/PerlGSL-Integration-SingleDim/issues",
     },
     no_index => {
       file => [ 'README.pod' ],

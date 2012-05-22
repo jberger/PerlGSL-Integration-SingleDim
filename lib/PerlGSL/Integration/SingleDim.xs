@@ -54,6 +54,7 @@ AV* c_int_1d(SV* eqn, SV* lower, SV* upper, int engine,
   struct params myparams;
   gsl_function F;
   AV* ret = newAV();
+  sv_2mortal((SV*)ret);
 
   xl = SvNV(lower);
   xu = SvNV(upper);

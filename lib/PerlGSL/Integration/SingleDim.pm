@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use Scalar::Util qw/looks_like_number/;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 $VERSION = eval $VERSION;
 
 require XSLoader;
